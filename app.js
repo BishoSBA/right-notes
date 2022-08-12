@@ -3,9 +3,10 @@ const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const exphbs = require("express-handlebars");
-const connectDB = require("./config/db");
 const passport = require("passport");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const connectDB = require("./config/db");
 
 // Load config
 dotenv.config({ path: "./config/config.env" });
@@ -32,6 +33,7 @@ app.use(
 		resave: false,
 		saveUninitialized: true,
 		cookie: { secure: true },
+		store: MongoStore.create({ mongoUrl: process.env.DB_STRING }),
 	})
 );
 
@@ -48,9 +50,4 @@ app.use("/auth", require("./routes/auth"));
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(
-	PORT,
-	console.log(
-		`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
-	)
-);
+app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
