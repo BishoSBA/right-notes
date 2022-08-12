@@ -1,29 +1,49 @@
 {
-	"name": "project-todo-app",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"name": "right-notes",
+	"version": "1.0.1",
+	"main": "app.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "webpack",
 		"watch": "webpack --watch",
-		"start": "webpack serve --open"
+		"start": "cross-env NODE_ENV=production node app",
+		"dev": "cross-env NODE_ENV=development nodemon app",
+		"postinstall": "node ./scripts/post-install.js"
 	},
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
 		"@babel/cli": "^7.18.9",
 		"@babel/core": "^7.18.9",
+		"cross-env": "^7.0.3",
 		"css-loader": "^6.7.1",
+		"nodemon": "^2.0.19",
 		"sass-loader": "^13.0.2",
 		"webpack": "^5.74.0",
 		"webpack-cli": "^4.10.0",
 		"webpack-loader": "^0.0.1"
 	},
 	"dependencies": {
+		"connect-mongo": "^4.6.0",
 		"dotenv": "^16.0.1",
-		"ejs": "^3.1.8",
 		"express": "^4.18.1",
-		"mongodb": "^4.8.1"
-	}
+		"express-handlebars": "^6.0.6",
+		"express-session": "^1.17.3",
+		"fs-extra": "^10.1.0",
+		"method-override": "^3.0.0",
+		"moment": "^2.29.4",
+		"mongodb": "^4.8.1",
+		"mongoose": "^6.5.2",
+		"morgan": "^1.10.0",
+		"passport": "^0.6.0",
+		"passport-google-oauth20": "^2.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BishoSBA/right-notes.git"
+	},
+	"bugs": {
+		"url": "https://github.com/BishoSBA/right-notes/issues"
+	},
+	"homepage": "https://github.com/BishoSBA/right-notes#readme",
+	"description": ""
 }
