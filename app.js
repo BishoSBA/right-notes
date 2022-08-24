@@ -12,7 +12,7 @@ const connectDB = require("./config/db");
 dotenv.config({ path: "./config/config.env" });
 
 //Passport config
-require("./config/passport.js")(passport);
+require("./config/passport")(passport);
 
 connectDB();
 
@@ -31,8 +31,7 @@ app.use(
 	session({
 		secret: "keyboard cat",
 		resave: false,
-		saveUninitialized: true,
-		cookie: { secure: true },
+		saveUninitialized: false,
 		store: MongoStore.create({ mongoUrl: process.env.DB_STRING }),
 	})
 );
@@ -47,6 +46,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //Routes
 app.use("/", require("./routes/index"));
 app.use("/auth", require("./routes/auth"));
+// app.use("/stories", require("./routes/stories"));
 
 const PORT = process.env.PORT || 3000;
 

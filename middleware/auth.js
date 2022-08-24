@@ -10,6 +10,7 @@ module.exports = {
 		if (!req.isAuthenticated()) {
 			return next();
 		} else {
+			console.log("ZZZ" + req);
 			res.redirect("/dashboard");
 		}
 	},

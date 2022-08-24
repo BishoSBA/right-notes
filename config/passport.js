@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 
 // Pulled from passport docs and add my .env variables
-module.exports = (passport) => {
+module.exports = function (passport) {
 	passport.use(
 		new GoogleStrategy(
 			{
