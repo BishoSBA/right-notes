@@ -3,8 +3,6 @@
 	"version": "1.0.1",
 	"main": "app.js",
 	"scripts": {
-		"build": "webpack",
-		"watch": "webpack --watch",
 		"start": "cross-env NODE_ENV=production node app",
 		"dev": "cross-env NODE_ENV=development nodemon app",
 		"postinstall": "node ./scripts/post-install.js"
