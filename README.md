@@ -1,5 +1,5 @@
 # Right Notes
-A Notes app that allows adding private and public notes for the world to see. CRUD functionality to enable users to browse through notes and edit their notes any tiem
+A Notes app that allows adding private and public notes for the world to see. CRUD functionality to enable users to browse through notes and edit their notes any time.
 **Link to project:** http://right-notes.onrender.com/
 
 ## How It's Made:
