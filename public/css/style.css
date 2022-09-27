@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Abyssinica+SIL&display=swap");
+
+body {
+	font-family: "Abyssinica SIL", serif;
+}
+
 p {
 	margin: 10px 0;
 }
@@ -19,4 +25,13 @@ p {
 
 .img-small {
 	width: 180px;
+}
+
+.btn-size {
+	width: 93%;
+	text-align: center;
+}
+
+.logo {
+	height: 50px;
 }

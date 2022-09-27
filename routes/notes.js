@@ -2,20 +2,20 @@ const express = require("express");
 const router = express.Router();
 const { ensureAuth } = require("../middleware/auth");
 
-const Story = require("../models/Story");
+const Note = require("../models/Note");
 
-// @desc    Show add stories page
-// @route   GET /stories/add
+// @desc    Show add notes page
+// @route   GET /notes/add
 router.get("/add", ensureAuth, (req, res) => {
-	res.render("stories/add");
+	res.render("notes/add");
 });
 
-// @desc    Process adding stories
-// @route   POST /stories/add
+// @desc    Process adding notes
+// @route   POST /notes/add
 router.post("/", ensureAuth, async (req, res) => {
 	try {
 		req.body.user = req.user.id;
-		await Story.create(req.body);
+		await Note.create(req.body);
 		res.render("dashboard");
 	} catch (err) {
 		console.error(err);
@@ -23,55 +23,55 @@ router.post("/", ensureAuth, async (req, res) => {
 	}
 });
 
-// @desc    Show all stories page
-// @route   GET /stories
+// @desc    Show all notes page
+// @route   GET /notes
 router.get("/", ensureAuth, async (req, res) => {
 	try {
-		const stories = await Story.find({ status: "public" })
+		const notes = await Note.find({ status: "public" })
 			.populate("user")
 			.sort({ createdAt: "desc" })
 			.lean();
-		res.render("stories/index", { stories });
+		res.render("notes/index", { notes });
 	} catch (err) {
 		console.error(err);
 		res.render("error/500");
 	}
 });
 
-// @desc    Show full story page
-// @route   GET /stories/:id
+// @desc    Show full note page
+// @route   GET /notes/:id
 router.get("/:id", ensureAuth, async (req, res) => {
 	try {
-		let story = await Story.findOne({ _id: req.params.id }).populate("user").lean();
+		let note = await Note.findOne({ _id: req.params.id }).populate("user").lean();
 
-		if (!story) {
+		if (!note) {
 			return res.render("error/404");
 		}
 
-		res.render("stories/show", { story });
+		res.render("notes/show", { note });
 	} catch (err) {
 		console.error(err);
 		res.render("error/404");
 	}
 });
 
-// @desc    Show edit stories page
-// @route   GET /stories/edit/:id
+// @desc    Show edit notes page
+// @route   GET /notes/edit/:id
 router.get("/edit/:id", ensureAuth, async (req, res) => {
 	try {
-		const story = await Story.findOne({ _id: req.params.id }).lean();
-		console.log(story);
-		if (!story) {
+		const note = await Note.findOne({ _id: req.params.id }).lean();
+		console.log(note);
+		if (!note) {
 			console.error(err);
 			res.render("error/404");
 		}
 
-		if (story.user != req.user.id) {
+		if (note.user != req.user.id) {
 			console.error(err);
-			res.render("stories");
+			res.render("notes");
 		} else {
-			res.render("stories/edit", {
-				story,
+			res.render("notes/edit", {
+				note,
 			});
 		}
 	} catch (err) {
@@ -80,16 +80,16 @@ router.get("/edit/:id", ensureAuth, async (req, res) => {
 	}
 });
 
-// @desc    Updates stories after submission
-// @route   PUT /stories/:id
+// @desc    Updates notes after submission
+// @route   PUT /notes/:id
 router.put("/:id", ensureAuth, async (req, res) => {
 	try {
-		let story = await Story.findById(req.params.id).lean();
-		if (story.user != req.user.id) {
+		let note = await Note.findById(req.params.id).lean();
+		if (note.user != req.user.id) {
 			console.error(err);
-			res.render("stories");
+			res.render("notes");
 		} else {
-			story = await Story.findOneAndUpdate({ _id: req.params.id }, req.body, {
+			note = await Note.findOneAndUpdate({ _id: req.params.id }, req.body, {
 				new: true,
 				runValidators: true,
 			});
@@ -102,11 +102,11 @@ router.put("/:id", ensureAuth, async (req, res) => {
 	res.redirect("/dashboard");
 });
 
-// @desc    Delete stories
-// @route   DELETE /stories/:id
+// @desc    Delete notes
+// @route   DELETE /notes/:id
 router.delete("/:id", ensureAuth, async (req, res) => {
 	try {
-		await Story.remove({ _id: req.params.id });
+		await Note.remove({ _id: req.params.id });
 		res.redirect("/dashboard");
 	} catch (err) {
 		console.error(err);
@@ -114,14 +114,14 @@ router.delete("/:id", ensureAuth, async (req, res) => {
 	}
 });
 
-// @desc    Show all stories page
-// @route   GET /stories/user/:userId
+// @desc    Show all notes page
+// @route   GET /notes/user/:userId
 router.get("/user/:userId", ensureAuth, async (req, res) => {
 	try {
-		const stories = await Story.find({ user: req.params.userId, status: "public" })
+		const notes = await Note.find({ user: req.params.userId, status: "public" })
 			.populate("user")
 			.lean();
-		res.render("stories/index", { stories });
+		res.render("notes/index", { notes });
 	} catch (err) {
 		console.error(err);
 		res.render("error/500");

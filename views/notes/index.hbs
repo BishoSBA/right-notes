@@ -1,6 +1,6 @@
-<h1>Stories</h1>
+<h1>Notes</h1>
 <div class="row">
-  {{#each stories}}
+  {{#each notes}}
     <div class="col s12 m4">
         <div class="card">
             <div class="card-image">
@@ -16,11 +16,11 @@
                 </div>
             </div>
             <div class="card-action center-align">
-                <a href="/stories/{{_id}}" class="btn grey">Read More</a>
+                <a href="/notes/{{_id}}" class="btn grey">Read More</a>
             </div>
         </div>
     </div>
   {{else}}
-    <p>No stories to display</p>
+    <p>No notes to display</p>
   {{/each}}
 </div>
