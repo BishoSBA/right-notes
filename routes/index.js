@@ -12,6 +12,14 @@ router.get("/", ensureGuest, (req, res) => {
 	});
 });
 
+// @desc    Signup page
+// @route   GET /sign
+router.get("/signup", ensureGuest, (req, res) => {
+	res.render("signup", {
+		layout: "login",
+	});
+});
+
 // @desc    Dashboard
 // @route   GET /dashboard
 router.get("/dashboard", ensureAuth, async (req, res) => {

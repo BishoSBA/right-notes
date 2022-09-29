@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const flash = require("express-flash");
 const exphbs = require("express-handlebars");
 const methodOverride = require("method-override");
 const passport = require("passport");
@@ -72,6 +73,9 @@ app.use((req, res, next) => {
 	res.locals.user = req.user || null;
 	next();
 });
+
+// Use flash for error handling
+app.use(flash());
 
 //static folders
 app.use(express.static(path.join(__dirname, "public")));

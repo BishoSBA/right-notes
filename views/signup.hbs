@@ -1,34 +1,30 @@
-<h3><i class="fas fa-book-reader"></i> RightNotes</h3>
+<h3><a href="#"><img src="../assets/right-notes-logo.svg" /></a></h3>
 
 <div class="section">
 	<p class="lead">
-		Create public and private notes for yourself or the world to see</p>
+		Create an account</p>
 </div>
 
 <div class="divider"></div>
+<div class="section">
 
-<div class="row">
-	<form class="col s12">
+	<form action="/auth/signup" method="POST">
 		<div class="row">
-			<div class="input-field col s6">
-				<input placeholder="Placeholder" id="first_name" type="text" class="validate" />
-				<label for="first_name">First Name</label>
-			</div>
-			<div class="input-field col s6">
-				<input id="last_name" type="text" class="validate" />
-				<label for="last_name">Last Name</label>
+			<div class="input-field col s12">
+				<input id="firstname" type="text" class="validate" />
+				<label for="firstname">First name</label>
 			</div>
 		</div>
 		<div class="row">
 			<div class="input-field col s12">
-				<input
-					disabled
-					value="I am not editable"
-					id="disabled"
-					type="text"
-					class="validate"
-				/>
-				<label for="disabled">Disabled</label>
+				<input id="lastname" type="text" class="validate" />
+				<label for="lastname">Last name</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s12">
+				<input id="email" type="email" class="validate" />
+				<label for="email">Email</label>
 			</div>
 		</div>
 		<div class="row">
@@ -39,26 +35,20 @@
 		</div>
 		<div class="row">
 			<div class="input-field col s12">
-				<input id="email" type="email" class="validate" />
-				<label for="email">Email</label>
+				<input id="confirmpassword" type="password" class="validate" />
+				<label for="confirmpassword">Confirm password</label>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col s12">
-				This is an inline input field:
-				<div class="input-field inline">
-					<input id="email_inline" type="email" class="validate" />
-					<label for="email_inline">Email</label>
-					<span class="helper-text" data-error="wrong" data-success="right">Helper text</span>
-				</div>
-			</div>
+		<div>
+			<button class="btn waves-effect waves-light btn-size" type="submit">
+				Sign up
+			</button>
 		</div>
 	</form>
-</div>
-
-<div class="section">
-	<a href="/auth/google" class="btn red darken-1">
-		<i class="fab fa-google left"></i>
-		Login with google
-	</a>
+	<div class="row">
+		<a href="/auth/google" class="btn red darken-1 btn-size">
+			<i class="fab fa-google left"></i>
+			Login with google
+		</a>
+	</div>
 </div>
