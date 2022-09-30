@@ -55,7 +55,6 @@ router.get("/signup", (req, res) => {
 //@desc Processing sign up form
 //@route POST /auth/signup
 router.post("/signup", (req, res) => {
-	console.log(req.body);
 	const validationErrors = [];
 	if (!validator.isEmail(req.body.email))
 		validationErrors.push({ msg: "Please enter a valid email address." });
@@ -65,6 +64,7 @@ router.post("/signup", (req, res) => {
 		validationErrors.push({ msg: "Passwords do not match" });
 
 	if (validationErrors.length) {
+		console.log(validationErrors);
 		req.flash("errors", validationErrors);
 		return res.redirect("../signup");
 	}
@@ -73,13 +73,14 @@ router.post("/signup", (req, res) => {
 	const user = new User({
 		firstName: req.body.firstname,
 		lastName: req.body.lastname,
-		displayName: firstName + " " + lastName,
+		displayName: req.body.firstname + " " + req.body.lastname,
 		email: req.body.email,
 		password: req.body.password,
 	});
 
+	console.log(user);
 	User.findOne(
-		{ $or: [{ email: req.body.email }, { firstName: req.body.firstName }] },
+		{ $or: [{ email: req.body.email }, { firstName: req.body.firstname }] },
 		(err, existingUser) => {
 			if (err) {
 				console.log(err);
@@ -101,6 +102,7 @@ router.post("/signup", (req, res) => {
 						console.log(err);
 						return res.redirect("../signup");
 					}
+					console.log("end");
 					res.redirect("/dashboard");
 				});
 			});

@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema({
 	},
 	image: {
 		type: String,
+		default:
+			"https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png",
 	},
 	createdAt: {
 		type: Date,
