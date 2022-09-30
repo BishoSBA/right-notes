@@ -9,6 +9,9 @@ const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const connectDB = require("./config/db");
+const index = require("./routes/index");
+const auth = require("./routes/auth");
+const notes = require("./routes/notes");
 
 // Load config
 dotenv.config({ path: "./config/config.env" });
@@ -21,8 +24,8 @@ connectDB();
 const app = express();
 
 // Middleware to allow body parsing
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Method override
 app.use(
@@ -81,9 +84,9 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, "public")));
 
 //Routes
-app.use("/", require("./routes/index"));
-app.use("/auth", require("./routes/auth"));
-app.use("/notes", require("./routes/notes"));
+app.use("/", index);
+app.use("/auth", auth);
+app.use("/notes", notes);
 
 const PORT = process.env.PORT || 3000;
 

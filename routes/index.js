@@ -13,7 +13,7 @@ router.get("/", ensureGuest, (req, res) => {
 });
 
 // @desc    Signup page
-// @route   GET /sign
+// @route   GET /signup
 router.get("/signup", ensureGuest, (req, res) => {
 	res.render("signup", {
 		layout: "login",
