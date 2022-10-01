@@ -27,7 +27,7 @@ router.get("/login", ensureGuest, (req, res) => {
 
 //@desc logging in
 //@route POST /auth/login
-router.post("/login", passport.authenticate("local", { failureRedirect: "/" }), (req, res) => {
+router.post("/login", (req, res) => {
 	const validationErrors = [];
 	if (!validator.isEmail(req.body.email))
 		validationErrors.push({ msg: "Please enter a valid email address." });
@@ -40,15 +40,15 @@ router.post("/login", passport.authenticate("local", { failureRedirect: "/" }), 
 	}
 	req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
 
-	console.log(req.body);
 	passport.authenticate("local", (err, user, info) => {
 		if (err) {
 			console.error(err);
-			return res.redirect("/login");
+			return res.redirect("/auth/login");
 		}
 		if (!user) {
+			console.log(user);
 			req.flash("errors", info);
-			return res.redirect("/login");
+			return res.redirect("/auth/login");
 		}
 		req.logIn(user, (err) => {
 			if (err) {
