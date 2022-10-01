@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
+const { ensureGuest, ensureAuth } = require("../middleware/auth");
 
 //@desc Auth with Google
 //@route GET /auth/google
@@ -20,11 +21,8 @@ router.get(
 
 //@desc Redirect from login
 //@route GET /auth/login
-router.get("/login", (req, res) => {
-	if (req.user) {
-		return res.redirect("/dashboard");
-	}
-	res.redirect("/");
+router.get("/login", ensureGuest, (req, res) => {
+	res.redirect("/dashboard");
 });
 
 //@desc logging in
@@ -41,6 +39,26 @@ router.post("/login", passport.authenticate("local", { failureRedirect: "/" }), 
 		return res.redirect("../");
 	}
 	req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
+
+	console.log(req.body);
+	passport.authenticate("local", (err, user, info) => {
+		if (err) {
+			console.error(err);
+			return res.redirect("/login");
+		}
+		if (!user) {
+			req.flash("errors", info);
+			return res.redirect("/login");
+		}
+		req.logIn(user, (err) => {
+			if (err) {
+				console.error(err);
+				return res.redirect("/login");
+			}
+			req.flash("success", { msg: "Success! You are logged in." });
+			res.redirect(req.session.returnTo || "/dashboard");
+		});
+	})(req, res);
 });
 
 //@desc Redirect from signup
@@ -64,7 +82,6 @@ router.post("/signup", (req, res) => {
 		validationErrors.push({ msg: "Passwords do not match" });
 
 	if (validationErrors.length) {
-		console.log(validationErrors);
 		req.flash("errors", validationErrors);
 		return res.redirect("../signup");
 	}
@@ -78,36 +95,34 @@ router.post("/signup", (req, res) => {
 		password: req.body.password,
 	});
 
-	console.log(user);
-	User.findOne(
-		{ $or: [{ email: req.body.email }, { firstName: req.body.firstname }] },
-		(err, existingUser) => {
+	User.findOne({ email: req.body.email }, (err, existingUser) => {
+		console.log(req.body);
+		if (err) {
+			console.log(err);
+			return res.redirect("../signup");
+		}
+		if (existingUser) {
+			console.log(existingUser);
+			req.flash("errors", {
+				msg: "Account with that email address or username already exists.",
+			});
+			return res.redirect("../signup");
+		}
+		user.save((err) => {
 			if (err) {
 				console.log(err);
 				return res.redirect("../signup");
 			}
-			if (existingUser) {
-				req.flash("errors", {
-					msg: "Account with that email address or username already exists.",
-				});
-				return res.redirect("../signup");
-			}
-			user.save((err) => {
+			req.logIn(user, (err) => {
 				if (err) {
 					console.log(err);
 					return res.redirect("../signup");
 				}
-				req.logIn(user, (err) => {
-					if (err) {
-						console.log(err);
-						return res.redirect("../signup");
-					}
-					console.log("end");
-					res.redirect("/dashboard");
-				});
+				console.log("end");
+				res.redirect("/dashboard");
 			});
-		}
-	);
+		});
+	});
 });
 
 //@desc Logout user
