@@ -12,6 +12,7 @@ const connectDB = require("./config/db");
 const index = require("./routes/index");
 const auth = require("./routes/auth");
 const notes = require("./routes/notes");
+const favicon = require("serve-favicon");
 
 // Load config
 dotenv.config({ path: "./config/config.env" });
@@ -22,6 +23,9 @@ require("./config/passport")(passport);
 connectDB();
 
 const app = express();
+
+// Add favicon
+app.use(favicon(path.join(__dirname, "/public/assets/icon.ico")));
 
 // Middleware to allow body parsing
 app.use(express.json());
