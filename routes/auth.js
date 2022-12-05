@@ -25,6 +25,45 @@ router.get("/login", ensureGuest, (req, res) => {
 	res.redirect("/dashboard");
 });
 
+//@desc Demo Acc
+//@route POST /auth/login
+router.get("/demo", (req, res) => {
+	req.body.email = "demo@demo.com";
+	req.body.password = "Demo123456";
+
+	const validationErrors = [];
+	if (!validator.isEmail(req.body.email))
+		validationErrors.push({ msg: "Please enter a valid email address." });
+	if (validator.isEmpty(req.body.password))
+		validationErrors.push({ msg: "Password cannot be blank." });
+
+	if (validationErrors.length) {
+		req.flash("errors", validationErrors);
+		return res.redirect("../");
+	}
+	req.body.email = validator.normalizeEmail(req.body.email, { gmail_remove_dots: false });
+
+	passport.authenticate("local", (err, user, info) => {
+		if (err) {
+			console.error(err);
+			return res.redirect("/auth/login");
+		}
+		if (!user) {
+			console.log(user);
+			req.flash("errors", info);
+			return res.redirect("/auth/login");
+		}
+		req.logIn(user, (err) => {
+			if (err) {
+				console.error(err);
+				return res.redirect("/login");
+			}
+			req.flash("success", { msg: "Success! You are logged in." });
+			res.redirect(req.session.returnTo || "/dashboard");
+		});
+	})(req, res);
+});
+
 //@desc logging in
 //@route POST /auth/login
 router.post("/login", (req, res) => {
